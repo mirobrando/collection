@@ -202,4 +202,54 @@ class ArrayListTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('four', $mapList->get(3)->message);
         $this->assertEquals('five', $mapList->get(4)->message);
     }
+
+
+    public function testShouldGroupByItem()
+    {
+        $list = new ArrayList('string');
+        $list->add('one');
+        $list->add('one');
+        $list->add('two');
+        $list->add('two');
+        $list->add('three');
+
+        $mapList =  $list->map(function($item) {
+            $t = new TestType();
+            $t->message = $item;
+            return $t;
+        });
+
+        $result = $mapList->groupBy('message');
+
+        $this->assertEquals(3, $result->size());
+        $this->assertEquals(2, $result->get(0)->size());
+        $this->assertEquals(2, $result->get(1)->size());
+        $this->assertEquals(1, $result->get(2)->size());
+
+    }
+
+    public function testShouldGroupByItemByGetter()
+    {
+        $list = new ArrayList('string');
+        $list->add('one');
+        $list->add('one');
+        $list->add('two');
+        $list->add('two');
+        $list->add('three');
+
+        $mapList =  $list->map(function($item) {
+            $t = new TestType();
+            $t->message = $item;
+            return $t;
+        });
+
+        $result = $mapList->groupBy('property');
+
+        $this->assertEquals(3, $result->size());
+        $this->assertEquals(2, $result->get(0)->size());
+        $this->assertEquals(2, $result->get(1)->size());
+        $this->assertEquals(1, $result->get(2)->size());
+
+    }
+
 }

@@ -186,5 +186,44 @@ class ArrayList extends Collection
         return self::create(array_map($callback, $this->data));
     }
 
+    /**
+     * only for object
+     *
+     * @param $propertyName
+     * @return ArrayList
+     */
+    public function groupBy($propertyName)
+    {
+        $result = [];
+
+        foreach ($this->data as $item) {
+            if (!is_object($item)) {
+                return $this;
+            }
+
+            $propertyValue = $this->getValueProperty($item, $propertyName);
+            if (!array_key_exists($propertyValue, $result)) {
+                $result[$propertyValue] = new ArrayList($this->type);
+            }
+            $result[$propertyValue]->add($item);
+        }
+
+        return self::create($result);
+    }
+
+
+    private function getValueProperty($item, $propertyName) {
+        if (property_exists($item, $propertyName)) {
+            return $item->$propertyName;
+        }
+
+        $getter = 'get' . ucfirst($propertyName);
+
+        if (method_exists($item, $getter)) {
+            return $item->$getter();
+        }
+
+        return 0;
+    }
 
 }
