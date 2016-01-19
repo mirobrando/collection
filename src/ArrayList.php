@@ -187,6 +187,15 @@ class ArrayList extends Collection
     }
 
     /**
+     * @param callable $callback
+     * @return number
+     */
+    public function sum(\Closure $callback)
+    {
+        return array_sum(array_map($callback, $this->data));
+    }
+
+    /**
      * only for object
      *
      * @param $propertyName
