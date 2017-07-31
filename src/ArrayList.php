@@ -187,6 +187,28 @@ class ArrayList extends Collection
     }
 
     /**
+     * @param callable $compareFunction
+     * @return ArrayList
+     */
+    public function sort(\Closure $compareFunction)
+    {
+        uasort($this->data, $compareFunction);
+        return self::create($this->data);
+    }
+
+
+    /**
+     * @param int $limit
+     * @return ArrayList
+     */
+    public function limit($limit)
+    {
+        return self::create(array_slice($this->data, 0, $limit));
+    }
+
+
+
+    /**
      * @param callable $callback
      * @return number
      */
