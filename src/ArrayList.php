@@ -244,16 +244,14 @@ class ArrayList extends Collection
 
 
     private function getValueProperty($item, $propertyName) {
-        if (property_exists($item, $propertyName)) {
-            return $item->$propertyName;
-        }
-
         $getter = 'get' . ucfirst($propertyName);
-
         if (method_exists($item, $getter)) {
             return $item->$getter();
         }
 
+        if (property_exists($item, $propertyName)) {
+            return $item->$propertyName;
+        }
         return 0;
     }
 
